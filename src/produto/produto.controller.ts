@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UseFilters,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
@@ -13,6 +14,7 @@ import { AtualizaProdutoDTO } from './dto/atualizaProduto.dto';
 import { CriaProdutoDTO } from './dto/CriaProduto.dto';
 import { ProdutoEntity } from './produto.entity';
 import { ProdutoRepository } from './produto.repository';
+import { FiltroUsuarioHttpException } from 'src/usuario/validacao/filtro.usuario.http.exception';
 
 @Controller('produtos')
 export class ProdutoController {
@@ -42,6 +44,7 @@ export class ProdutoController {
   }
 
   @Put('/:id')
+  @UseFilters(new FiltroUsuarioHttpException())
   async atualiza(
     @Param('id') id: string,
     @Body() dadosProduto: AtualizaProdutoDTO,
@@ -58,6 +61,7 @@ export class ProdutoController {
   }
 
   @Delete('/:id')
+  @UseFilters(new FiltroUsuarioHttpException())
   async remove(@Param('id') id: string) {
     const produtoRemovido = await this.produtoRepository.remove(id);
 

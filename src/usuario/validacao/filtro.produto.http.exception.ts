@@ -2,7 +2,7 @@ import { ExceptionFilter, Catch, ArgumentsHost, HttpException, BadRequestExcepti
 import { Request, Response } from 'express';
 
 @Catch(HttpException)
-export class FiltroUsuarioHttpException implements ExceptionFilter {
+export class FiltroProdutoHttpException implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -16,7 +16,7 @@ export class FiltroUsuarioHttpException implements ExceptionFilter {
         .json({
           status: status,
           parametros: request.params,
-          mensagem: 'Usuario não encontrado!'
+          mensagem: 'Produto não encontrado!'
         });
     }
     else if (exception instanceof BadRequestException)

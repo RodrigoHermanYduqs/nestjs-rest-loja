@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsuarioEntity } from './usuario.entity';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UsuarioRepository {
