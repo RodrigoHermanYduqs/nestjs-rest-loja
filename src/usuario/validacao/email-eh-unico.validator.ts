@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   registerDecorator,
   ValidationArguments,
+  ValidationError,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,

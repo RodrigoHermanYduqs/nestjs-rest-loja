@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -6,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  UseFilters,
 } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { AtualizaUsuarioDTO } from './dto/AtualizaUsuario.dto';
@@ -13,6 +15,7 @@ import { CriaUsuarioDTO } from './dto/CriaUsuario.dto';
 import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
 import { UsuarioEntity } from './usuario.entity';
 import { UsuarioRepository } from './usuario.repository';
+import { FiltroUsuarioHttpException } from './validacao/filtro.usuario.http.exception';
 
 @Controller('/usuarios')
 export class UsuarioController {
@@ -45,22 +48,24 @@ export class UsuarioController {
   }
 
   @Put('/:id')
-  async atualizaUsuario(
+  @UseFilters(new FiltroUsuarioHttpException())
+    async atualizaUsuario(
     @Param('id') id: string,
     @Body() novosDados: AtualizaUsuarioDTO,
   ) {
-    const usuarioAtualizado = await this.usuarioRepository.atualiza(
-      id,
-      novosDados,
-    );
+      const usuarioAtualizado = await this.usuarioRepository.atualiza(
+        id,
+        novosDados,
+      );
 
-    return {
-      usuario: usuarioAtualizado,
-      messagem: 'usuário atualizado com sucesso',
-    };
+      return {
+        usuario: usuarioAtualizado,
+        messagem: 'usuário atualizado com sucesso',
+      };
   }
 
   @Delete('/:id')
+  @UseFilters(new FiltroUsuarioHttpException())
   async removeUsuario(@Param('id') id: string) {
     const usuarioRemovido = await this.usuarioRepository.remove(id);
 
@@ -69,4 +74,5 @@ export class UsuarioController {
       messagem: 'usuário removido com suceso',
     };
   }
+
 }
